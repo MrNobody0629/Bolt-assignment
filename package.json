@@ -10,6 +10,9 @@
   },
   "author": "Anuj Verma",
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",

@@ -40,7 +40,6 @@ const getClass = async (req, res) => {
     // Check cache
     const cachedClass = cache.get(`class_${className}`);
     if (cachedClass) {
-    console.log("Using cached data", cachedClass);
       return res.json(cachedClass);
     }
     const response = await axios.get(`${BASE_URL}/api/classes/${className}`);
@@ -49,8 +48,6 @@ const getClass = async (req, res) => {
 
     // Save to cache
     cache.set(`class_${className}`, classData);
-    console.log("added in cache", classData);
-
     res.json(classData);
   } catch (error) {
     console.error(error);
