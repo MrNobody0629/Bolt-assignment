@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('./config/config');
+const apiRoutes = require('./api/routes');
 
 // Initialize app
 const app = express();
@@ -13,6 +14,9 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
+
+// Mount API routes
+app.use('/api', apiRoutes);
 
 // Root route
 app.get('/health', (req, res) => {
