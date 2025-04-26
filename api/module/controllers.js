@@ -33,6 +33,36 @@ const getSummary = async (req, res) => {
   }
 }
 
+const getClass = async (req, res) => {
+  const { className } = req.params;
+
+  try {
+    // Check cache
+    const cachedClass = cache.get(`class_${className}`);
+    if (cachedClass) {
+    console.log("Using cached data", cachedClass);
+      return res.json(cachedClass);
+    }
+    const response = await axios.get(`${BASE_URL}/api/classes/${className}`);
+    const { name, hit_die, proficiency_choices, saving_throws } = response.data;
+    const classData = { name, hit_die, proficiency_choices, saving_throws };
+
+    // Save to cache
+    cache.set(`class_${className}`, classData);
+    console.log("added in cache", classData);
+
+    res.json(classData);
+  } catch (error) {
+    console.error(error);
+    if (error.response && error.response.status === 404) {
+      res.status(404).json({ error: 'Class not found' });
+    } else {
+      res.status(500).json({ error: 'Failed to fetch class data' });
+    }
+  }
+}
+
 module.exports = {
   getSummary,
+  getClass
 };
